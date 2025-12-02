@@ -5,13 +5,14 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UserModule } from '../user/user.module';
+import 'dotenv/config';
 
 @Module({
   imports: [
     UserModule,
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'your-secret-key-change-this',
+      secret: process.env.JWT_SECRET as string,
       signOptions: { expiresIn: '7d' },
     }),
   ],

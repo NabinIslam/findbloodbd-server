@@ -17,8 +17,13 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
-  async findAll(): Promise<User[]> {
-    return await this.userRepository.find();
+  async findAll(): Promise<{ message: string; data: User[] }> {
+    const users = await this.userRepository.find();
+
+    return {
+      message: 'Users retrieved successfully',
+      data: users,
+    };
   }
 
   async findOne(id: number): Promise<User | null> {
