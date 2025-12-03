@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import {
   IsEmail,
@@ -15,6 +16,7 @@ import {
   IsDate,
   IsEnum,
 } from 'class-validator';
+import { Post } from '../../post/entities/post.entity';
 
 export enum Role {
   USER = 'USER',
@@ -55,6 +57,12 @@ export class User {
   @Column({ nullable: true })
   @IsString({ message: 'Avatar must be a string' })
   avatar: string;
+
+  @OneToMany(() => Post, (post) => post.user, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  posts: Post[];
 
   @CreateDateColumn()
   @IsDate()

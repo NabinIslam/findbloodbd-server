@@ -126,14 +126,26 @@ export class UserService {
   }
 
   async remove(id: number) {
-    const user = await this.userRepository.delete(id);
+    try {
+      const user = await this.userRepository.delete(id);
 
-    if (user.affected === 0) {
-      throw new NotFoundException('User not found');
+      if (user.affected === 0) {
+        throw new NotFoundException('User not found');
+      }
+
+      return {
+        message: 'User deleted successfully',
+      };
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      if (error.code === '23503') {
+        throw new BadRequestException(
+          "Cannot delete user with existing posts. Please delete the user's posts first.",
+        );
+      }
+      throw error;
     }
-
-    return {
-      message: 'User deleted successfully',
-    };
   }
 }

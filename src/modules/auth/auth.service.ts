@@ -83,4 +83,10 @@ export class AuthService {
       },
     };
   }
+
+  signOut() {
+    return {
+      message: 'User signed out successfully',
+    };
+  }
 }
