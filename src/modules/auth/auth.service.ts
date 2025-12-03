@@ -19,8 +19,9 @@ export class AuthService {
   async signUp(signUpDto: SignUpDto) {
     // Check if user already exists
     const existingUser = await this.userService.findByEmail(signUpDto.email);
+
     if (existingUser) {
-      throw new ConflictException('User with this email already exists');
+      throw new ConflictException('User already exists');
     }
 
     // Hash the password

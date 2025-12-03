@@ -13,7 +13,13 @@ import {
   MaxLength,
   IsPositive,
   IsDate,
+  IsEnum,
 } from 'class-validator';
+
+export enum Role {
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+}
 
 @Entity('users')
 export class User {
@@ -41,10 +47,10 @@ export class User {
   @MaxLength(255, { message: 'Password must not exceed 255 characters' })
   password: string;
 
-  @Column({ default: 'user' })
+  @Column({ type: 'enum', enum: Role, default: Role.USER })
   @IsNotEmpty({ message: 'Role is required' })
-  @IsString({ message: 'Role must be a string' })
-  role: string;
+  @IsEnum(Role, { message: 'Role must be USER or ADMIN' })
+  role: Role;
 
   @Column({ nullable: true })
   @IsString({ message: 'Avatar must be a string' })
